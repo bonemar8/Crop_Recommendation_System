@@ -59,3 +59,28 @@ crop_data['label'] = crop_data['label'].map(crop_dict) #maps labels(keys in dict
 #ABOVE WE TURNED LABELS INTO int's because machine learning algorithm sometimes do not work with strings, like corr() function
 
 # print(crop_data.head()) #Now labels are numbers as you can notice
+
+# print(crop_data.label.value_counts()) #100 of each label but now as integers from 1 to 22 (22 labels)
+
+#FUTURE AND TARGET SEPERATION, seperating labels and corresponding values to different variables
+
+x = crop_data.drop('label', axis = 1)
+y = crop_data['label']
+
+# print(x.head())
+# print(y.head())
+
+#SPLITTING DATA FOR TRAINING AND TESTING:
+
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.3, random_state = 7)
+
+#%30 is used for resting %70 is used for trainin the data 
+#80-20 ratio is what generally used but i want better evaluation (20 felt low, might be irrational)
+#random_state's value doesn't matter, BUT it needs to be consistent (if 7, 7 everywhere)
+
+# print(x_test.shape)
+# print(x_train.shape)
+#by rows you can see the split percentage, change test_size and try above again to see difference
+
