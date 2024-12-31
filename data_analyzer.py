@@ -18,7 +18,7 @@ crop_data = pd.read_csv("Crop_recommendation.csv")
 
 # print(crop_data.corr())
 
-numeric_data = crop_data.drop(columns=['label'])
+# numeric_data = crop_data.drop(columns=['label']) #for corr function, wasn't working with strings
 # print(numeric_data.corr())
 
 # import seaborn as sns
@@ -63,7 +63,7 @@ crop_data['label'] = crop_data['label'].map(crop_dict) #maps labels(keys in dict
 
 # print(crop_data.label.value_counts()) #100 of each label but now as integers from 1 to 22 (22 labels)
 
-#FUTURE AND TARGET SEPERATION, seperating labels and corresponding values to different variables
+#FEATURE AND TARGET SEPERATION: (seperating labels and corresponding values to different variables)
 
 x = crop_data.drop('label', axis = 1)
 y = crop_data['label']
@@ -108,3 +108,40 @@ x_train = sc.transform(x_train)
 x_test = sc.transform(x_test)
 
 #this centers the data (mean = 0) and scale it (standard deviation = 1).
+
+#TRAINING DATA WITH DIFFERENT CLASSIFIERS:
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier, ExtraTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, BaggingClassifier, GradientBoostingClassifier, AdaBoostClassifier
+from sklearn.metrics import accuracy_score
+
+models = {
+  'LogisticRegression' : LogisticRegression(),
+  'GaussianNB' : GaussianNB(),
+  'SVC' : SVC(),
+  'KNeighborsClassifier' : KNeighborsClassifier(),
+  'DecisionTreeClassifier' : DecisionTreeClassifier(),
+  'ExtraTreeClassifier' : ExtraTreeClassifier(),
+  'RandomForestClassifier' : RandomForestClassifier(),
+  'BaggingClassifier' : BaggingClassifier(),
+  'GradientBoostingClassifier' : GradientBoostingClassifier(),
+  'AdaBoostClassifier' : AdaBoostClassifier(),
+}
+
+# for name, model in models.items():
+#   model.fit(x_train, y_train)
+#   y_prediction = model.predict(x_test)
+#   score = accuracy_score(y_test, y_prediction) 
+#   print(f"{name} model's accuracy is: {score}")
+# Testing each classifier to see which one has better prediction rate
+# accuracy_score() function evaluates performance of the model by correct/total number of predictions
+# 1. accuracy is for RandomForestClassifier, 2. was GaussianNB model
+
+rc = RandomForestClassifier()
+rc.fit(x_train, y_train)
+y_prediction = rc.predict(x_test)
+# print(accuracy_score(y_test, y_prediction))
