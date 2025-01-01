@@ -66,4 +66,4 @@ pickle.dump(rc, open('model.pkl', 'wb'))
 pickle.dump(mx, open('minmaxscaler.pkl', 'wb'))
 pickle.dump(sc, open('standardscaler.pkl', 'wb'))
 
-#NOTE: if you want to rest recommendation function, comment pickles to not create the files again
+#NOTE: if you want to test recommendation function, comment pickles to not recreate the files     
