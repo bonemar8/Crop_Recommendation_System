@@ -1,9 +1,7 @@
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
 import pickle
 
 # Load data
@@ -39,31 +37,7 @@ x_test = sc.transform(x_test)
 rc = RandomForestClassifier()
 rc.fit(x_train, y_train)
 
-# Test accuracy
-y_prediction = rc.predict(x_test)
-accuracy = accuracy_score(y_test, y_prediction)
-print(f"RandomForestClassifier accuracy: {accuracy}")
-
-# Recommendation function
-def recommendation(N, P, K, temperature, humidity, ph, rainfall):
-    features = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
-    features_scaled = mx.transform(features)
-    features_standardized = sc.transform(features_scaled)
-    prediction = rc.predict(features_standardized)
-    return prediction[0]
-
-# Test the recommendation function
-N, P, K = 90, 42, 43
-temperature, humidity, ph, rainfall = 20.879744, 82.002744, 6.502985, 202.935536
-predicted_crop = recommendation(N, P, K, temperature, humidity, ph, rainfall)
-
-# Output recommended crop
-inverse_crop_dict = {v: k for k, v in crop_dict.items()}
-print(f"Recommended crop: {inverse_crop_dict[predicted_crop]}")
-
 # Save models and scalers
 pickle.dump(rc, open('model.pkl', 'wb'))
 pickle.dump(mx, open('minmaxscaler.pkl', 'wb'))
 pickle.dump(sc, open('standardscaler.pkl', 'wb'))
-
-#NOTE: if you want to test recommendation function, comment pickles to not recreate the files     
