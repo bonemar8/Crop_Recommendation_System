@@ -145,3 +145,33 @@ rc = RandomForestClassifier()
 rc.fit(x_train, y_train)
 y_prediction = rc.predict(x_test)
 # print(accuracy_score(y_test, y_prediction))
+
+#TESTING RECOMMENDATION:
+
+# print(crop_data.columns)
+def recommendation(N, P, K, temperature, humidity, ph, rainfall):
+  features = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
+
+  mx_features = mx.fit_transform(features)
+  sc_mx_features = sc.transform(mx_features)
+
+  prediction = rc.predict(sc_mx_features).reshape(1, -1)
+  return prediction[0]
+
+# print(crop_data.head(10))
+
+#Test values(the first row of crop_data):
+N = 90
+P = 42
+K = 43
+temperature = 20.879744
+humidity = 82.002744
+ph = 6.502985
+rainfall = 202.935536
+
+#The recommendation for given values
+predicted_crop = recommendation(N, P, K, temperature, humidity, ph, rainfall)
+
+print(f"Recommended crop is: {predicted_crop}") #will give you a number since we mapped crops to integers earlier
+
+
