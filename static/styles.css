@@ -1,102 +1,158 @@
+/* General Styles */
 body {
   background: url('https://www.shutterstock.com/image-photo/golden-sunlight-bathes-vibrant-soybean-600nw-2464146967.jpg') no-repeat center center fixed;
   background-size: cover;
-  font-family: Arial, sans-serif;
-  color: #fefae0;
-  position: relative;
+  font-family: 'Arial', sans-serif;
+  color: #333; /* Ensure readable text on light background */
+  margin: 0;
+  padding: 0;
 }
-
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: -1;
-}
-
-.navbar {
-  background: #2d6a4f;
-}
-
-.navbar-brand {
-  font-size: 1.5rem;
-  color: #fefae0 !important;
-  font-weight: bold;
-}
-
 .container {
-  margin-top: 40px;
-  background: rgba(255, 255, 255, 0.85);
-  padding: 20px;
+  max-width: 500px;
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  color: #2d6a4f;
+/* Header Styling */
+h2 {
+  font-size: 2rem;
+  color: #2d6a4f; /* Dark green for emphasis */
   text-align: center;
+  margin-bottom: 20px;
   font-weight: bold;
 }
 
-.form-label {
-  font-weight: bold;
-  color: #495057;
-  text-align: center;
-  display: block;
-}
-
+/* Input Fields */
 .form-control {
-  max-width: 300px;
-  margin: 0 auto;
+  font-size: 1.2rem; /* Larger font size for inputs */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  color: #495057;
 }
 
-.btn {
-  background-color: #2d6a4f;
-  color: #fefae0;
+/* Navbar Custom Styling */
+.custom-navbar {
+  background: linear-gradient(to bottom, #87CEFA, #ffffff); /* Sky blue to white gradient */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-navbar .navbar-brand {
+  color: #2d6a4f; /* Dark green for contrast */
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
-.btn:hover {
+.custom-navbar .nav-link {
+  color: #333; /* Darker text for readability */
+  font-size: 1rem;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #2d6a4f; /* Match the brand color on hover */
+}
+
+.custom-navbar .navbar-toggler {
+  border-color: #87CEFA; /* Match the gradient color */
+}
+
+.custom-navbar .navbar-toggler-icon {
+  background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns%3D%22http://www.w3.org/2000/svg%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22%2387CEFA%22 stroke-width%3D%222%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E');
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #2d6a4f; /* Consistent green color */
+  border: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
   background-color: #40916c;
+  color: #ffffff;
 }
 
-.result-card {
-  background: #40916c;
-  color: #fefae0;
-  margin-top: 20px;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: center;
+/* Log Out Button Styling */
+.btn-logout {
+  background-color: #FF4500; /* Vibrant orange-red for attention */
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-footer {
-  margin-top: 30px;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #fefae0;
+.btn-logout:hover {
+  background-color: #FF6347; /* Softer red on hover */
 }
 
+/* Recommend Crop Button Styling */
+.btn-recommend {
+  background-color: #32CD32; /* Bright lime green for positivity */
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-recommend:hover {
+  background-color: #228B22; /* Forest green on hover */
+}
+
+/* Styling of links here*/
+a {
+  font-size: 1rem;
+  color: #2d6a4f;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* styling of Error Messages do not touch */
 .error {
   color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  font-size: 1rem;
+  margin-top: 10px;
+  text-align: center;
 }
 
-/* Responsive Layout */
+/* Responsiveness */
 @media (max-width: 768px) {
   .container {
-    margin-top: 20px;
-    padding: 15px;
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  h2 {
+    font-size: 1.8rem;
   }
 
   .form-control {
-    max-width: 100%;
+    font-size: 1rem;
   }
 
-  .btn {
-    width: 100%;
+  .btn-primary {
+    font-size: 1rem;
+    padding: 8px 16px;
   }
 }
+
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Records</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Compare Records</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Record Name</th>
+                    <th>Nitrogen</th>
+                    <th>Phosphorus</th>
+                    <th>Potassium</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>pH</th>
+                    <th>Rainfall</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.record_name }}</td>
+                    <td>{{ record.nitrogen }}</td>
+                    <td>{{ record.phosphorus }}</td>
+                    <td>{{ record.potassium }}</td>
+                    <td>{{ record.temperature }}</td>
+                    <td>{{ record.humidity }}</td>
+                    <td>{{ record.ph }}</td>
+                    <td>{{ record.rainfall }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

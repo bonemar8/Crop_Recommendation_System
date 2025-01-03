@@ -14,17 +14,43 @@
   </head>
   <body>
     
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">SCRS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            {% if current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="btn btn-logout nav-link" href="{{ url_for('logout') }}">Log Out</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
     </nav>
+    
     
     <div class="container">
       <h1>🌾 Smart Crop Recommendation System 🌾</h1>
       <form method="POST">
         {{ form.csrf_token }}
-      
+        
+        <div class="row mt-4">
+          <div class="col-md-12 text-center">
+            <input type="text" name="record_name" class="form-control" placeholder="Enter Record Name" required>
+          </div>
+        </div>
+        
         <div class="row mt-4">
           <div class="col-md-12 text-center">
             {{ form.nitrogen.label(class="form-label") }}
@@ -111,7 +137,7 @@
       
         <div class="row mt-4">
           <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-lg">Recommend Crop</button>
+            <button type="submit" class="btn btn-recommend">Recommend Crop</button>
           </div>
         </div>
       </form>
@@ -121,6 +147,17 @@
           <p class="fs-4">{{ result }}</p>
         </div>
       {% endif %}
+      
+      <h3 class="mt-5">Saved Records</h3>
+      <ul class="list-group">
+        {% for record in records %}
+          <li class="list-group-item">
+            <a href="{{ url_for('view_record', record_id=record.id) }}" class="text-decoration-none text-dark">
+              <strong>{{ record.record_name }}</strong>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
     
     <footer>
@@ -134,3 +171,7 @@
     ></script>
   </body>
 </html>
+
+
+
+

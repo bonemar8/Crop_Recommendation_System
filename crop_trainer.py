@@ -2,42 +2,86 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
+import numpy as np
 import pickle
 
 # Load data
-crop_data = pd.read_csv("Crop_recommendation.csv")
+try:
+    crop_data = pd.read_csv("Crop_recommendation.csv")
+except FileNotFoundError:
+    print("Error: The 'Crop_recommendation.csv' file is missing.")
+    exit(1)
 
-# Encode crop labels into integers
-crop_dict = {
-    'rice': 1, 'maize': 2, 'chickpea': 3, 'kidneybeans': 4, 'pigeonpeas': 5, 'mothbeans': 6, 
-    'mungbean': 7, 'blackgram': 8, 'lentil': 9, 'pomegranate': 10, 'banana': 11, 'mango': 12, 
-    'grapes': 13, 'watermelon': 14, 'muskmelon': 15, 'apple': 16, 'orange': 17, 'papaya': 18, 
-    'coconut': 19, 'cotton': 20, 'jute': 21, 'coffee': 22
-}
-
+# Dynamic encoding of crop labels
+unique_crops = crop_data['label'].unique()
+crop_dict = {crop: idx for idx, crop in enumerate(unique_crops, start=1)}
+reverse_crop_dict = {idx: crop for crop, idx in crop_dict.items()}
 crop_data['label'] = crop_data['label'].map(crop_dict)
 
 # Separate features and target
 x = crop_data.drop('label', axis=1)
 y = crop_data['label']
 
+# Calculate feature ranges for validation
+feature_ranges = {col: (x[col].min(), x[col].max()) for col in x.columns}
+
 # Split data into training and testing sets
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=7)
 
 # Scale and standardize data
-mx = MinMaxScaler()
-sc = StandardScaler()
+minmax_scaler = MinMaxScaler()
+standard_scaler = StandardScaler()
 
-x_train = mx.fit_transform(x_train)
-x_test = mx.transform(x_test)
-x_train = sc.fit_transform(x_train)
-x_test = sc.transform(x_test)
+x_train_scaled = minmax_scaler.fit_transform(x_train)
+x_test_scaled = minmax_scaler.transform(x_test)
+x_train_standardized = standard_scaler.fit_transform(x_train_scaled)
+x_test_standardized = standard_scaler.transform(x_test_scaled)
 
 # Train RandomForest model
-rc = RandomForestClassifier()
-rc.fit(x_train, y_train)
+rf_classifier = RandomForestClassifier(random_state=7)
+rf_classifier.fit(x_train_standardized, y_train)
 
-# Save models and scalers
-pickle.dump(rc, open('model.pkl', 'wb'))
-pickle.dump(mx, open('minmaxscaler.pkl', 'wb'))
-pickle.dump(sc, open('standardscaler.pkl', 'wb'))
+# Evaluate the model
+y_pred = rf_classifier.predict(x_test_standardized)
+print("Model Evaluation Report:")
+print(classification_report(y_test, y_pred))
+
+# Feature Importance Visualization
+feature_importances = rf_classifier.feature_importances_
+feature_names = crop_data.drop('label', axis=1).columns
+
+plt.figure(figsize=(10, 6))
+plt.barh(feature_names, feature_importances, color='skyblue')
+plt.xlabel('Feature Importance')
+plt.ylabel('Features')
+plt.title('Feature Importance in Crop Recommendation')
+plt.grid(axis='x', linestyle='--', alpha=0.7)
+plt.tight_layout()
+plt.show()
+
+# Save models, scalers, and crop dictionaries
+with open('model.pkl', 'wb') as f:
+    pickle.dump(rf_classifier, f)
+
+with open('minmaxscaler.pkl', 'wb') as f:
+    pickle.dump(minmax_scaler, f)
+
+with open('standardscaler.pkl', 'wb') as f:
+    pickle.dump(standard_scaler, f)
+
+with open('crop_dict.pkl', 'wb') as f:
+    pickle.dump(crop_dict, f)
+
+with open('reverse_crop_dict.pkl', 'wb') as f:
+    pickle.dump(reverse_crop_dict, f)
+
+with open('feature_ranges.pkl', 'wb') as f:
+    pickle.dump(feature_ranges, f)
+
+print("Model, scalers, crop dictionaries, and feature ranges have been saved successfully!")
+
+
+
+

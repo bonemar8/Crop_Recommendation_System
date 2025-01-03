@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ record.record_name }} Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>{{ record.record_name }} - Details</h2>
+        <ul class="list-group mt-3">
+            <li class="list-group-item"><strong>Nitrogen:</strong> {{ record.nitrogen }}</li>
+            <li class="list-group-item"><strong>Phosphorus:</strong> {{ record.phosphorus }}</li>
+            <li class="list-group-item"><strong>Potassium:</strong> {{ record.potassium }}</li>
+            <li class="list-group-item"><strong>Temperature:</strong> {{ record.temperature }}</li>
+            <li class="list-group-item"><strong>Humidity:</strong> {{ record.humidity }}</li>
+            <li class="list-group-item"><strong>pH:</strong> {{ record.ph }}</li>
+            <li class="list-group-item"><strong>Rainfall:</strong> {{ record.rainfall }}</li>
+        </ul>
+        <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">Back to Records</a>
+    </div>
+</body>
+</html>
