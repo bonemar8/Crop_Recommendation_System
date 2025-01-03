@@ -1,9 +1,9 @@
-/* General Styles */
+
 body {
   background: url('https://www.shutterstock.com/image-photo/golden-sunlight-bathes-vibrant-soybean-600nw-2464146967.jpg') no-repeat center center fixed;
   background-size: cover;
   font-family: 'Arial', sans-serif;
-  color: #333; /* Ensure readable text on light background */
+  color: #333; 
   margin: 0;
   padding: 0;
 }
@@ -16,7 +16,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Styling */
+/* Header Bruhh*/
 h2 {
   font-size: 2rem;
   color: #2d6a4f; /* Dark green for emphasis */
@@ -25,7 +25,10 @@ h2 {
   font-weight: bold;
 }
 
-/* Input Fields */
+/* Input Bruhh fields .
+form-control class is a CSS style that is commonly used to style input fields in forms. 
+In this specific case, the style applies to form elements like <input>, <textarea>, or 
+<select> that have the class="form-control" attribute in HTML */
 .form-control {
   font-size: 1.2rem; /* Larger font size for inputs */
   padding: 10px;
@@ -37,36 +40,36 @@ h2 {
 
 /* Navbar Custom Styling */
 .custom-navbar {
-  background: linear-gradient(to bottom, #87CEFA, #ffffff); /* Sky blue to white gradient */
+  background: linear-gradient(to bottom, #87CEFA, #ffffff); 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .custom-navbar .navbar-brand {
-  color: #2d6a4f; /* Dark green for contrast */
+  color: #2d6a4f; 
   font-size: 1.5rem;
   font-weight: bold;
 }
 
 .custom-navbar .nav-link {
-  color: #333; /* Darker text for readability */
+  color: #333; 
   font-size: 1rem;
 }
 
 .custom-navbar .nav-link:hover {
-  color: #2d6a4f; /* Match the brand color on hover */
+  color: #2d6a4f; 
 }
 
 .custom-navbar .navbar-toggler {
-  border-color: #87CEFA; /* Match the gradient color */
+  border-color: #87CEFA; 
 }
 
 .custom-navbar .navbar-toggler-icon {
   background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns%3D%22http://www.w3.org/2000/svg%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22%2387CEFA%22 stroke-width%3D%222%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E');
 }
 
-/* Buttons */
+/* Buttons Bruhh*/
 .btn-primary {
-  background-color: #2d6a4f; /* Consistent green color */
+  background-color: #2d6a4f; 
   border: none;
   color: #ffffff;
   font-size: 1.2rem;
@@ -80,9 +83,9 @@ h2 {
   color: #ffffff;
 }
 
-/* Log Out Button Styling */
+
 .btn-logout {
-  background-color: #FF4500; /* Vibrant orange-red for attention */
+  background-color: #FF4500; 
   color: #ffffff;
   font-size: 1rem;
   font-weight: bold;
@@ -94,12 +97,12 @@ h2 {
 }
 
 .btn-logout:hover {
-  background-color: #FF6347; /* Softer red on hover */
+  background-color: #FF6347; 
 }
 
-/* Recommend Crop Button Styling */
+
 .btn-recommend {
-  background-color: #32CD32; /* Bright lime green for positivity */
+  background-color: #32CD32; 
   color: #ffffff;
   font-size: 1rem;
   font-weight: bold;
@@ -111,7 +114,7 @@ h2 {
 }
 
 .btn-recommend:hover {
-  background-color: #228B22; /* Forest green on hover */
+  background-color: #228B22; 
 }
 
 /* Styling of links here*/
@@ -133,7 +136,7 @@ a:hover {
   text-align: center;
 }
 
-/* Responsiveness */
+/* Responsiveness media query*/
 @media (max-width: 768px) {
   .container {
     padding: 20px;

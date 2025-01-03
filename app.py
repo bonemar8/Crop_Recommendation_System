@@ -9,7 +9,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 import pickle
 import numpy as np
 
-# Initialize Flask app and dependencies
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -18,7 +18,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-# Load model, scalers, and crop dictionaries
+
 try:
     model = pickle.load(open('model.pkl', 'rb'))
     minmax_scaler = pickle.load(open('minmaxscaler.pkl', 'rb'))
@@ -30,7 +30,7 @@ except FileNotFoundError as e:
     print(f"Error loading required files: {e}")
     exit(1)
 
-# User and SoilRecord models
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
