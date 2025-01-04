@@ -1,4 +1,3 @@
-#Welcome to backend bruh here we are
 from flask import Flask, render_template, redirect, url_for, flash, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -9,7 +8,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 import pickle
 import numpy as np
 
-
+# Initialize Flask app
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -18,7 +17,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-
+# Load model and necessary files
 try:
     model = pickle.load(open('model.pkl', 'rb'))
     minmax_scaler = pickle.load(open('minmaxscaler.pkl', 'rb'))
@@ -27,10 +26,10 @@ try:
     reverse_crop_dict = pickle.load(open('reverse_crop_dict.pkl', 'rb'))
     feature_ranges = pickle.load(open('feature_ranges.pkl', 'rb'))
 except FileNotFoundError as e:
-    print(f"Error loading required files: {e}")
+    print(f"Error loading files: {e}")
     exit(1)
 
-
+# Models
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -47,7 +46,6 @@ class SoilRecord(db.Model):
     humidity = db.Column(db.Float, nullable=False)
     ph = db.Column(db.Float, nullable=False)
     rainfall = db.Column(db.Float, nullable=False)
-    timestamp = db.Column(db.DateTime, default=db.func.now())
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -85,7 +83,7 @@ def register():
         new_user = User(email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        flash('Account created successfully! Please log in.', 'success')
+        flash('Account created successfully!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
@@ -123,7 +121,6 @@ def home():
         ph = form.ph.data
         rainfall = form.rainfall.data
 
-        # Validation of inputs )))
         warnings = []
         for feature, value in zip(feature_ranges.keys(), [nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall]):
             min_val, max_val = feature_ranges[feature]
@@ -133,7 +130,6 @@ def home():
         if warnings:
             flash(", ".join(warnings), 'warning')
 
-        # Predict the recommended crop
         input_features = np.array([[nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall]])
         scaled_features = minmax_scaler.transform(input_features)
         standardized_features = standard_scaler.transform(scaled_features)
@@ -171,12 +167,25 @@ def home():
 def view_record(record_id):
     record = SoilRecord.query.get_or_404(record_id)
     if record.user_id != current_user.id:
-        abort(403)  # Forbidden error bruh
+        abort(403)
     return render_template('record_details.html', record=record)
+
+@app.route('/compare', methods=['GET', 'POST'])
+@login_required
+def compare_records():
+    records = SoilRecord.query.filter_by(user_id=current_user.id).all()
+    
+    if request.method == 'POST':
+        selected_record_ids = request.form.getlist('record_ids')
+        selected_records = SoilRecord.query.filter(SoilRecord.id.in_(selected_record_ids)).all()
+        return render_template('compare.html', records=selected_records, selected=True)
+    
+    return render_template('compare.html', records=records, selected=False)
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Bruh batu be sure tables are created
+        db.create_all()
     app.run(debug=True)
+
 
 

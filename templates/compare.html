@@ -7,37 +7,47 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h2>Compare Records</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Record Name</th>
-                    <th>Nitrogen</th>
-                    <th>Phosphorus</th>
-                    <th>Potassium</th>
-                    <th>Temperature</th>
-                    <th>Humidity</th>
-                    <th>pH</th>
-                    <th>Rainfall</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in records %}
-                <tr>
-                    <td>{{ record.record_name }}</td>
-                    <td>{{ record.nitrogen }}</td>
-                    <td>{{ record.phosphorus }}</td>
-                    <td>{{ record.potassium }}</td>
-                    <td>{{ record.temperature }}</td>
-                    <td>{{ record.humidity }}</td>
-                    <td>{{ record.ph }}</td>
-                    <td>{{ record.rainfall }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="compare-container">
+        <h2 class="text-center">Compare Records</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-header">
+                    <tr>
+                        <th>Record Name</th>
+                        <th>Nitrogen</th>
+                        <th>Phosphorus</th>
+                        <th>Potassium</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>pH</th>
+                        <th>Rainfall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.record_name }}</td>
+                        <td>{{ record.nitrogen }}</td>
+                        <td>{{ record.phosphorus }}</td>
+                        <td>{{ record.potassium }}</td>
+                        <td>{{ record.temperature }}</td>
+                        <td>{{ record.humidity }}</td>
+                        <td>{{ record.ph }}</td>
+                        <td>{{ record.rainfall }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Home</a>
+        </div>
     </div>
 </body>
 </html>
+
+
+
+
+
 

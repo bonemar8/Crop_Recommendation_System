@@ -3,12 +3,14 @@ body {
   background: url('https://www.shutterstock.com/image-photo/golden-sunlight-bathes-vibrant-soybean-600nw-2464146967.jpg') no-repeat center center fixed;
   background-size: cover;
   font-family: 'Arial', sans-serif;
-  color: #333; 
+  color: #333;
   margin: 0;
   padding: 0;
 }
+
+
 .container {
-  max-width: 500px;
+  max-width: 600px; /* Original smaller size for the home page */
   margin: 50px auto;
   background: #ffffff;
   padding: 30px;
@@ -16,21 +18,29 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Bruhh*/
-h2 {
-  font-size: 2rem;
-  color: #2d6a4f; /* Dark green for emphasis */
+
+.compare-container {
+  max-width: 900px; /* Larger size for the compare page */
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  overflow-x: auto; /* Ensure table responsiveness */
+}
+
+
+h1, h2 {
+  font-size: 2rem; /* Consistent font size */
+  color: #2d6a4f;
   text-align: center;
   margin-bottom: 20px;
   font-weight: bold;
 }
 
-/* Input Bruhh fields .
-form-control class is a CSS style that is commonly used to style input fields in forms. 
-In this specific case, the style applies to form elements like <input>, <textarea>, or 
-<select> that have the class="form-control" attribute in HTML */
+/* Input Fields */
 .form-control {
-  font-size: 1.2rem; /* Larger font size for inputs */
+  font-size: 1.2rem;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ced4da;
@@ -38,44 +48,39 @@ In this specific case, the style applies to form elements like <input>, <textare
   color: #495057;
 }
 
-/* Navbar Custom Styling */
+
 .custom-navbar {
-  background: linear-gradient(to bottom, #87CEFA, #ffffff); 
+  background: linear-gradient(to bottom, #87CEFA, #ffffff);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .custom-navbar .navbar-brand {
-  color: #2d6a4f; 
-  font-size: 1.5rem;
+  color: #2d6a4f;
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
 .custom-navbar .nav-link {
-  color: #333; 
+  color: #333;
   font-size: 1rem;
 }
 
 .custom-navbar .nav-link:hover {
-  color: #2d6a4f; 
+  color: #2d6a4f;
 }
 
-.custom-navbar .navbar-toggler {
-  border-color: #87CEFA; 
-}
-
-.custom-navbar .navbar-toggler-icon {
-  background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns%3D%22http://www.w3.org/2000/svg%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22%2387CEFA%22 stroke-width%3D%222%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E');
-}
-
-/* Buttons Bruhh*/
-.btn-primary {
-  background-color: #2d6a4f; 
-  border: none;
-  color: #ffffff;
+/* Buttons */
+.btn-primary, .btn-recommend, .btn-logout {
   font-size: 1.2rem;
-  padding: 10px 20px;
+  padding: 12px 25px;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #2d6a4f;
+  color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -83,41 +88,67 @@ In this specific case, the style applies to form elements like <input>, <textare
   color: #ffffff;
 }
 
-
-.btn-logout {
-  background-color: #FF4500; 
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-logout:hover {
-  background-color: #FF6347; 
-}
-
-
 .btn-recommend {
-  background-color: #32CD32; 
+  background-color: #32CD32;
   color: #ffffff;
-  font-size: 1rem;
   font-weight: bold;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .btn-recommend:hover {
-  background-color: #228B22; 
+  background-color: #228B22;
 }
 
-/* Styling of links here*/
+.btn-logout {
+  background-color: #FF4500;
+  color: #ffffff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #FF6347;
+}
+
+/* Compare Records Table */
+.table {
+  margin: 20px 0;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Prevent the table from exceeding the container width */
+}
+
+.table th, .table td {
+  padding: 15px; /* Adjusted for better spacing */
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  word-wrap: break-word; /* Handle long content gracefully */
+}
+
+.table th {
+  background-color: #2d6a4f;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.table td {
+  background-color: #f9f9f9;
+}
+
+.table td:hover {
+  background-color: #f1f1f1;
+}
+
+/* Error Messages */
+.error {
+  color: #dc3545;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Links */
 a {
   font-size: 1rem;
   color: #2d6a4f;
@@ -128,22 +159,19 @@ a:hover {
   text-decoration: underline;
 }
 
-/* styling of Error Messages do not touch */
-.error {
-  color: #dc3545;
-  font-size: 1rem;
-  margin-top: 10px;
-  text-align: center;
-}
-
-/* Responsiveness media query*/
+/* Responsiveness */
 @media (max-width: 768px) {
   .container {
+    max-width: 100%; /* Ensure responsiveness for the home page */
     padding: 20px;
-    margin: 20px auto;
   }
 
-  h2 {
+  .compare-container {
+    max-width: 100%; /* Ensure responsiveness for the compare page */
+    padding: 25px;
+  }
+
+  h1, h2 {
     font-size: 1.8rem;
   }
 
@@ -151,11 +179,18 @@ a:hover {
     font-size: 1rem;
   }
 
-  .btn-primary {
+  .btn-primary, .btn-recommend {
     font-size: 1rem;
-    padding: 8px 16px;
+    padding: 10px 18px;
+  }
+
+  .table th, .table td {
+    padding: 10px; /* Adjusted for smaller screens */
   }
 }
+
+
+
 
 
 

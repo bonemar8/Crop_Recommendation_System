@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
-    
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">SCRS</a>
@@ -38,7 +37,6 @@
         </div>
       </div>
     </nav>
-    
     
     <div class="container">
       <h1>🌾 Smart Crop Recommendation System 🌾</h1>
@@ -158,6 +156,8 @@
           </li>
         {% endfor %}
       </ul>
+
+      <a href="{{ url_for('compare_records') }}" class="btn btn-primary mt-4">Compare Records</a>
     </div>
     
     <footer>
@@ -171,6 +171,8 @@
     ></script>
   </body>
 </html>
+
+
 
 
 
