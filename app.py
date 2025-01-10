@@ -278,6 +278,17 @@ def delete_record(record_id):
     flash(f'Record "{record.record_name}" has been deleted.', 'success')
     return redirect(url_for('home'))
 
+@app.route('/show_weather')
+@login_required
+def show_weather():
+    # Load the weather data
+    weather_df = pd.read_csv('current_weather.csv')
+    forecast_df = pd.read_csv('10_day_weather_forecast.csv')
+    monthly_df = pd.read_csv('3months_weather.csv')
+
+    # Render the page with weather stats
+    return render_template('weather_states.html', weather_df=weather_df, forecast_df=forecast_df, monthly_df=monthly_df)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
