@@ -46,6 +46,7 @@ class SoilRecord(db.Model):
     humidity = db.Column(db.Float, nullable=False)
     ph = db.Column(db.Float, nullable=False)
     rainfall = db.Column(db.Float, nullable=False)
+    recommended_crop = db.Column(db.String(100), nullable=False)  # Added recommended crop field
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -146,7 +147,8 @@ def home():
                 temperature=temperature,
                 humidity=humidity,
                 ph=ph,
-                rainfall=rainfall
+                rainfall=rainfall,
+                recommended_crop=recommended_crop
             )
             db.session.add(new_record)
             db.session.commit()
@@ -186,6 +188,8 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+
 
 
 
