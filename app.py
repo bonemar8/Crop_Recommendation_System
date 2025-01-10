@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, abort, send_file
+from flask import Flask, render_template, redirect, url_for, flash, request, abort, send_file, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, FloatField, SubmitField
@@ -11,6 +11,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from io import BytesIO
 import pandas as pd
+import base64
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -73,7 +74,7 @@ class SoilForm(FlaskForm):
     nitrogen = FloatField('Nitrogen', validators=[InputRequired(), NumberRange(min=0, max=200)])
     phosphorus = FloatField('Phosphorus', validators=[InputRequired(), NumberRange(min=0, max=200)])
     potassium = FloatField('Potassium', validators=[InputRequired(), NumberRange(min=0, max=200)])
-    temperature = FloatField('Temperature (\u00b0C)', validators=[InputRequired(), NumberRange(min=0, max=50)])
+    temperature = FloatField('Temperature (°C)', validators=[InputRequired(), NumberRange(min=0, max=50)])
     humidity = FloatField('Humidity (%)', validators=[InputRequired(), NumberRange(min=0, max=100)])
     ph = FloatField('pH', validators=[InputRequired(), NumberRange(min=0, max=14)])
     rainfall = FloatField('Rainfall (mm)', validators=[InputRequired(), NumberRange(min=0, max=5000)])
@@ -168,11 +169,54 @@ def home():
 
     return render_template('index.html', form=form, records=SoilRecord.query.filter_by(user_id=current_user.id).all())
 
-@app.route('/generate_graph', methods=['POST'])
+@app.route('/preview_graph', methods=['POST'])
 @login_required
-def generate_graph():
+def preview_graph():
     # Retrieve records for the logged-in user
     records = SoilRecord.query.filter_by(user_id=current_user.id).all()
+
+    if not records:
+        return jsonify({"error": "No records available to generate graph."}), 400
+
+    # Create a DataFrame for visualization
+    data = {
+        'Record Name': [record.record_name for record in records],
+        'Nitrogen': [record.nitrogen for record in records],
+        'Phosphorus': [record.phosphorus for record in records],
+        'Potassium': [record.potassium for record in records],
+        'Temperature': [record.temperature for record in records],
+        'Humidity': [record.humidity for record in records],
+        'pH': [record.ph for record in records],
+        'Rainfall': [record.rainfall for record in records]
+    }
+    df = pd.DataFrame(data)
+
+    # Generate the graph
+    plt.figure(figsize=(10, 6))
+    sns.barplot(data=df.melt(id_vars=["Record Name"]), x="Record Name", y="value", hue="variable")
+    plt.title("Soil Composition and Environmental Factors")
+    plt.ylabel("Values")
+    plt.xticks(rotation=45)
+
+    # Save the graph to a BytesIO stream
+    img_stream = BytesIO()
+    plt.savefig(img_stream, format='png')
+    plt.close()
+    img_stream.seek(0)
+
+    # Convert to base64 for preview
+    graph_data = base64.b64encode(img_stream.getvalue()).decode('utf-8')
+    return jsonify({'graph': graph_data})
+
+@app.route('/download_graph', methods=['POST'])
+@login_required
+def download_graph():
+    # Retrieve records for the logged-in user
+    records = SoilRecord.query.filter_by(user_id=current_user.id).all()
+
+    if not records:
+        flash("No records available to generate graph.", "warning")
+        return redirect(url_for('home'))
 
     # Create a DataFrame for visualization
     data = {
@@ -238,6 +282,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
 
 
 
