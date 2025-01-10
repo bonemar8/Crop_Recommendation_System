@@ -184,10 +184,22 @@ def compare_records():
     
     return render_template('compare.html', records=records, selected=False)
 
+@app.route('/delete_record/<int:record_id>', methods=['POST'])
+@login_required
+def delete_record(record_id):
+    record = SoilRecord.query.get_or_404(record_id)
+    if record.user_id != current_user.id:
+        abort(403)  # Prevent unauthorized deletion
+    db.session.delete(record)
+    db.session.commit()
+    flash(f'Record "{record.record_name}" has been deleted.', 'success')
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
 
 
 
