@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, abort
+from flask import Flask, render_template, redirect, url_for, flash, request, abort, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, FloatField, SubmitField
@@ -7,6 +7,10 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import pickle
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from io import BytesIO
+import pandas as pd
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -46,7 +50,7 @@ class SoilRecord(db.Model):
     humidity = db.Column(db.Float, nullable=False)
     ph = db.Column(db.Float, nullable=False)
     rainfall = db.Column(db.Float, nullable=False)
-    recommended_crop = db.Column(db.String(100), nullable=False)  # Added recommended crop field
+    recommended_crop = db.Column(db.String(100), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -69,7 +73,7 @@ class SoilForm(FlaskForm):
     nitrogen = FloatField('Nitrogen', validators=[InputRequired(), NumberRange(min=0, max=200)])
     phosphorus = FloatField('Phosphorus', validators=[InputRequired(), NumberRange(min=0, max=200)])
     potassium = FloatField('Potassium', validators=[InputRequired(), NumberRange(min=0, max=200)])
-    temperature = FloatField('Temperature (°C)', validators=[InputRequired(), NumberRange(min=0, max=50)])
+    temperature = FloatField('Temperature (\u00b0C)', validators=[InputRequired(), NumberRange(min=0, max=50)])
     humidity = FloatField('Humidity (%)', validators=[InputRequired(), NumberRange(min=0, max=100)])
     ph = FloatField('pH', validators=[InputRequired(), NumberRange(min=0, max=14)])
     rainfall = FloatField('Rainfall (mm)', validators=[InputRequired(), NumberRange(min=0, max=5000)])
@@ -164,6 +168,41 @@ def home():
 
     return render_template('index.html', form=form, records=SoilRecord.query.filter_by(user_id=current_user.id).all())
 
+@app.route('/generate_graph', methods=['POST'])
+@login_required
+def generate_graph():
+    # Retrieve records for the logged-in user
+    records = SoilRecord.query.filter_by(user_id=current_user.id).all()
+
+    # Create a DataFrame for visualization
+    data = {
+        'Record Name': [record.record_name for record in records],
+        'Nitrogen': [record.nitrogen for record in records],
+        'Phosphorus': [record.phosphorus for record in records],
+        'Potassium': [record.potassium for record in records],
+        'Temperature': [record.temperature for record in records],
+        'Humidity': [record.humidity for record in records],
+        'pH': [record.ph for record in records],
+        'Rainfall': [record.rainfall for record in records]
+    }
+    df = pd.DataFrame(data)
+
+    # Generate the graph
+    plt.figure(figsize=(10, 6))
+    sns.barplot(data=df.melt(id_vars=["Record Name"]), x="Record Name", y="value", hue="variable")
+    plt.title("Soil Composition and Environmental Factors")
+    plt.ylabel("Values")
+    plt.xticks(rotation=45)
+
+    # Save the plot to a BytesIO stream as a PDF
+    pdf_stream = BytesIO()
+    plt.savefig(pdf_stream, format='pdf')
+    plt.close()
+    pdf_stream.seek(0)
+
+    # Send the PDF file as a response
+    return send_file(pdf_stream, as_attachment=True, download_name="graph.pdf", mimetype='application/pdf')
+
 @app.route('/record/<int:record_id>')
 @login_required
 def view_record(record_id):
@@ -176,12 +215,12 @@ def view_record(record_id):
 @login_required
 def compare_records():
     records = SoilRecord.query.filter_by(user_id=current_user.id).all()
-    
+
     if request.method == 'POST':
         selected_record_ids = request.form.getlist('record_ids')
         selected_records = SoilRecord.query.filter(SoilRecord.id.in_(selected_record_ids)).all()
         return render_template('compare.html', records=selected_records, selected=True)
-    
+
     return render_template('compare.html', records=records, selected=False)
 
 @app.route('/delete_record/<int:record_id>', methods=['POST'])
@@ -199,6 +238,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
 
 
 

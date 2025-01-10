@@ -164,6 +164,9 @@
       </ul>
 
       <a href="{{ url_for('compare_records') }}" class="btn btn-primary mt-4">Compare Records</a>
+      <form action="{{ url_for('generate_graph') }}" method="POST" class="mt-3">
+        <button type="submit" class="btn btn-secondary">Download Graph as PDF</button>
+      </form>
     </div>
     
     <footer>
@@ -177,6 +180,7 @@
     ></script>
   </body>
 </html>
+
 
 
 
