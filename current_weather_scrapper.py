@@ -24,3 +24,4 @@ df = pd.DataFrame(weather)
 df.to_csv("current_weather.csv", index=False)
 
 print("Data has been saved  ")
+
